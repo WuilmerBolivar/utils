@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>DATOS RIF by WuilmerBolivar</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>DATOS RIF</h1>
+        <p>Consultar datos de un rif</p>
+        <p class="view"><a href="https://github.com/WuilmerBolivar/utils">View the Project on GitHub <small>WuilmerBolivar/utils</small></a></p>
+        <ul>
+          <li><a href="https://github.com/WuilmerBolivar/utils/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/WuilmerBolivar/utils/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/WuilmerBolivar/utils">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="rutinas-de-utilidades-generales" class="anchor" href="#rutinas-de-utilidades-generales" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Rutinas de utilidades generales</h1>
+
+<h2>
+<a id="requerimientos" class="anchor" href="#requerimientos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requerimientos</h2>
+
+<ul>
+<li>PHP 5.0 o superior</li>
+<li><a href="http://php.net/manual/es/intro.curl.php">Librería CURL</a></li>
+</ul>
+
+<h2>
+<a id="archivos" class="anchor" href="#archivos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Archivos</h2>
+
+<h3>
+<a id="1-rifphp" class="anchor" href="#1-rifphp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Rif.php</h3>
+
+<p>Clase que valida el rif indicado contra la información arrojada por el portal del seniat.</p>
+
+<h3>
+<a id="2-ejemplophp" class="anchor" href="#2-ejemplophp" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Ejemplo.php:</h3>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-pse">&lt;?php</span><span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">require_once</span> <span class="pl-s"><span class="pl-pds">'</span>Rif.php<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-smi">$rif</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">Rif</span>(<span class="pl-s"><span class="pl-pds">'</span>G200003030<span class="pl-pds">'</span></span>);</span>
+<span class="pl-s1"><span class="pl-smi">$datosFiscales</span> <span class="pl-k">=</span> <span class="pl-c1">json_decode</span>(<span class="pl-smi">$rif</span><span class="pl-k">-&gt;</span>getInfo());</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-k">switch</span> (<span class="pl-smi">$datosFiscales</span><span class="pl-k">-&gt;</span><span class="pl-smi">code_result</span>) {</span>
+<span class="pl-s1">  <span class="pl-k">case</span> <span class="pl-c1">1</span>:</span>
+<span class="pl-s1">    <span class="pl-smi">$texto</span>  <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Razón social: {<span class="pl-smi">$datosFiscales</span><span class="pl-k">-&gt;</span><span class="pl-smi">seniat</span><span class="pl-k">-&gt;</span><span class="pl-smi">nombre</span>}&lt;br /&gt;<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">            <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">"</span>Agente Retención: {<span class="pl-smi">$datosFiscales</span><span class="pl-k">-&gt;</span><span class="pl-smi">seniat</span><span class="pl-k">-&gt;</span><span class="pl-smi">agenteretencioniva</span>}&lt;br /&gt;<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">            <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">"</span>Contribuyente IVA: {<span class="pl-smi">$datosFiscales</span><span class="pl-k">-&gt;</span><span class="pl-smi">seniat</span><span class="pl-k">-&gt;</span><span class="pl-smi">contribuyenteiva</span>}&lt;br /&gt;<span class="pl-pds">"</span></span></span>
+<span class="pl-s1">            <span class="pl-k">.</span> <span class="pl-s"><span class="pl-pds">"</span>Tasa: {<span class="pl-smi">$datosFiscales</span><span class="pl-k">-&gt;</span><span class="pl-smi">seniat</span><span class="pl-k">-&gt;</span><span class="pl-smi">tasa</span>}&lt;br /&gt;<span class="pl-pds">"</span></span>;</span>
+<span class="pl-s1">    <span class="pl-k">break</span>;</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">  <span class="pl-k">default</span>:</span>
+<span class="pl-s1">    <span class="pl-smi">$texto</span> <span class="pl-k">=</span> <span class="pl-smi">$datosFiscales</span><span class="pl-k">-&gt;</span><span class="pl-smi">message</span>;</span>
+<span class="pl-s1">  <span class="pl-k">break</span>;</span>
+<span class="pl-s1">}</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"><span class="pl-c1">echo</span> <span class="pl-c1">utf8_decode</span>(<span class="pl-smi">$texto</span>);</span></pre></div>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/WuilmerBolivar">WuilmerBolivar</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
